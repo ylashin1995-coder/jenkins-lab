@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'ENVIRONMENT', choices: ['main', 'dev'], description: 'Target Environment')
+        string(name: 'IMAGE_TAG', defaultValue: 'v1.0', description: 'Docker Image Tag')
+    }
+    stages {
+        stage('Deploy Manual') {
+            steps {
+                script {
+                    if (params.ENVIRONMENT == 'main') {
+                        sh "docker rm -f app-main || true"
+                        sh "docker run -d --expose 3000 -p 3000:3000 --name app-main nodemain:${params.IMAGE_TAG}"
+                    } else if (params.ENVIRONMENT == 'dev') {
+                         sh "docker rm -f app-dev || true"
+                        sh "docker run -d --expose 3001 -p 3001:3000 --name app-dev nodedev:${params.IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+    }
+}
