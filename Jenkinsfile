@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:7.8.0' 
-            args '-u root:root'
-        }
-    }
+    agent any
     environment {
         PATH = "/usr/local/bin:$PATH"
         DOCKER_HOST = "unix:///var/run/docker.sock"
@@ -17,12 +12,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'npm install'
+                sh 'docker run --rm -u root -v $(pwd):/opt -w /opt node:7.8.0 npm install'
             }
         }
         stage('Test') {
             steps {
-                sh 'CI=true npm test'
+                sh 'docker run --rm -u root -v $(pwd):/opt -w /opt -e CI=true node:7.8.0 npm test'
             }
         }
         stage('Build Docker Image') {
