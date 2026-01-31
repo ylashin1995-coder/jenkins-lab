@@ -4,6 +4,10 @@ pipeline {
         choice(name: 'ENVIRONMENT', choices: ['main', 'dev'], description: 'Target Environment')
         string(name: 'IMAGE_TAG', defaultValue: 'v1.0', description: 'Docker Image Tag')
     }
+    environment {
+        PATH = "/usr/local/bin:$PATH"
+        DOCKER_HOST = "unix:///var/run/docker.sock"
+    }
     stages {
         stage('Deploy Manual') {
             steps {

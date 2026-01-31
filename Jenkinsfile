@@ -5,6 +5,10 @@ pipeline {
             args '-u root:root'
         }
     }
+    environment {
+        PATH = "/usr/local/bin:$PATH"
+        DOCKER_HOST = "unix:///var/run/docker.sock"
+    }
     stages {
         stage('Checkout') {
             steps {
