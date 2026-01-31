@@ -12,12 +12,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker run --rm -u root -v $(pwd):/opt -w /opt node:7.8.0 npm install'
+                sh 'docker run --rm -u root -v $(pwd):/opt -w /opt node:14 npm install'
             }
         }
         stage('Test') {
             steps {
-                sh 'docker run --rm -u root -v $(pwd):/opt -w /opt -e CI=true node:7.8.0 npm test'
+                sh 'docker run --rm -u root -v $(pwd):/opt -w /opt -e CI=true node:14 npm test'
             }
         }
         stage('Build Docker Image') {
